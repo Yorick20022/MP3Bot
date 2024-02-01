@@ -8,7 +8,8 @@ export const data = new SlashCommandBuilder()
     .setDescription('converts a YouTube URL to MP3 file')
     .addStringOption(option => option.setName('url').setDescription('YouTube URL').setRequired(true))
 export async function execute(interaction: ChatInputCommandInteraction) {
-    let ytUrl = interaction.options.getString('url');
+    
+    const ytUrl = interaction.options.getString('url');
 
     try {
         // Download the video using ytdl-core
@@ -32,7 +33,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         stream.on('info', (info: { videoDetails: { title: string; }; }) => {
             const sanitizedTitle = sanitizeFilename(info.videoDetails.title);
             const outputPath = path.join(audioPath, `${sanitizedTitle}.mp3`);
-
+ 
             const outputStream = fs.createWriteStream(outputPath);
             stream.pipe(outputStream);
 
